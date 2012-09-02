@@ -84,7 +84,6 @@ GameObject:
   - 4: {fileID: 1025963178}
   - 82: {fileID: 1025963179}
   - 114: {fileID: 1025963180}
-  - 166: {fileID: 1025963181}
   - 164: {fileID: 1025963182}
   m_Layer: 0
   m_Name: Audio Source
@@ -166,30 +165,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1025963177}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7338bac7845ae43249f67ec8523208ce, type: 3}
   m_Name: 
   bpm: 124
-  regenerate: 0
   fm_mul: 4
   fm_mod: .300000012
-  env_rel: .0500000007
---- !u!166 &1025963181
-AudioChorusFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1025963177}
-  m_Enabled: 0
-  m_DryMix: .5
-  m_WetMix1: .5
-  m_WetMix2: .5
-  m_WetMix3: .5
-  m_Delay: 40
-  m_Rate: .800000012
-  m_Depth: .0299999993
-  m_FeedBack: 0
+  env_rel: .0700000003
 --- !u!164 &1025963182
 AudioReverbFilter:
   m_ObjectHideFlags: 0
@@ -212,7 +195,7 @@ AudioReverbFilter:
   m_RoomLF: 0
   m_LFReference: 250
   m_ReflectionsDelay: 0
-  m_ReverbPreset: 9
+  m_ReverbPreset: 27
 --- !u!1 &2034664120
 GameObject:
   m_ObjectHideFlags: 0
