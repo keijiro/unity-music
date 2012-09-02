@@ -1,7 +1,6 @@
 #pragma strict
 
 class Scale {
-//	static private var intervals = [0, 5, 7];
 	static private var intervals = [0, 2, 3, 5, 7, 10];
 
 	private var base = 0;
