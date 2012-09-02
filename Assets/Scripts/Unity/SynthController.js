@@ -3,6 +3,7 @@
 @script RequireComponent(AudioSource)
 
 var bpm = 124.0;
+var regenerate = false;
 
 @Range(1, 24)       var fm_mul = 1;
 @Range(0.0, 1.0)    var fm_mod = 0.0;
@@ -21,6 +22,10 @@ function Start() {
 }
 
 function Update() {
+    if (regenerate) {
+        seq.Regenerate();
+        regenerate = false;
+    }
     osc.mul = fm_mul;
     osc.mod = fm_mod * fm_mod * fm_mod;
     env.release = env_rel;
