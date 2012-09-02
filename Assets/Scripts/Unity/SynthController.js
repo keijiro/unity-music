@@ -27,8 +27,8 @@ function Start() {
 }
 
 function Update() {
-    osc1.mul = osc2.mul = fm_mul;
-    osc1.mod = osc2.mod = fm_mod * fm_mod * fm_mod;
+    osc1.multiplier = osc2.multiplier = fm_mul;
+    osc1.modulation = osc2.modulation = fm_mod * fm_mod * fm_mod;
     env1.release = env2.release = env_rel;
 }
 
