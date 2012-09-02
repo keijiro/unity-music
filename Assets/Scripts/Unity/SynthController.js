@@ -3,50 +3,59 @@
 @script RequireComponent(AudioSource)
 
 var bpm = 124.0;
+var base = 46.0;
 
 @Range(1, 24)       var fm_mul = 1;
 @Range(0.0, 1.0)    var fm_mod = 0.0;
-@Range(0.01, 0.3)    var env_rel = 0.2;
+@Range(0.01, 0.3)   var env_rel = 0.2;
 
-private var osc1 = Oscillator();
-private var osc2 = Oscillator();
-private var env1 = Envelope();
-private var env2 = Envelope();
-private var amp1 = Amplifier(env1);
-private var amp2 = Amplifier(env2);
-private var bit1 = Bitcrusher();
-private var bit2 = Bitcrusher();
-private var seq1 : Sequencer;
-private var seq2 : Sequencer;
+class ASynth {
+    static private var seed = 0.0;
+
+    var osc = Oscillator();
+    var env = Envelope();
+    var amp = Amplifier(env);
+    var bit = Bitcrusher();
+    var seq : Sequencer;
+
+    function ASynth(bpm: int, base: int, octave : int) {
+        seq = Sequencer(bpm, base + 12 * octave, seed);
+        seed += 3.1415926;
+    }
+
+    function SetParam(fm_mul : int, fm_mod : float, env_rel : float) {
+        osc.multiplier = fm_mul;
+        osc.modulation = fm_mod;
+        env.release = env_rel;
+    }
+
+    function Run() {
+        if (seq.Run()) {
+            osc.SetNote(seq.currentNote);
+            env.Bang();
+        }
+        var x = bit.Run(amp.Run(osc.Run()));
+        env.Update();
+        return x;
+    }
+}
+
+private var arp1 = ASynth(bpm, base, 1);
+private var arp2 = ASynth(bpm, base, 3);
 
 function Start() {
-    seq1 = Sequencer(bpm, 80, 0.0);
-    seq2 = Sequencer(bpm, 80 - 12, 0.53);
     audio.clip = AudioClip.Create("(null)", 0xfffffff, 1, SynthConfig.kSampleRate, false, true, function(data:float[]){});
     audio.Play();
 }
 
 function Update() {
-    osc1.multiplier = osc2.multiplier = fm_mul;
-    osc1.modulation = osc2.modulation = fm_mod * fm_mod * fm_mod;
-    env1.release = env2.release = env_rel;
+    arp1.SetParam(fm_mul, fm_mod, env_rel);
+    arp2.SetParam(fm_mul, fm_mod, env_rel);
 }
 
 function OnAudioFilterRead(data : float[], channels : int) {
     // Asserts channels == 2
     for (var i = 0; i < data.Length; i += 2) {
-        if (seq1.Run()) {
-            osc1.SetNote(seq1.currentNote);
-            env1.Bang();
-        }
-        if (seq2.Run()) {
-            osc2.SetNote(seq2.currentNote);
-            env2.Bang();
-        }
-        var x = bit1.Run(amp1.Run(osc1.Run()));
-        x += bit2.Run(amp2.Run(osc2.Run()));
-        data[i] = data[i + 1] = x;
-        env1.Update();
-        env2.Update();
+        data[i] = data[i + 1] = arp1.Run() + arp2.Run();
     }
 }

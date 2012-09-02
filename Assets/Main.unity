@@ -170,8 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7338bac7845ae43249f67ec8523208ce, type: 3}
   m_Name: 
   bpm: 124
-  fm_mul: 4
-  fm_mod: .300000012
+  base: 46
+  fm_mul: 2
+  fm_mod: .200000003
   env_rel: .0700000003
 --- !u!164 &1025963182
 AudioReverbFilter:
