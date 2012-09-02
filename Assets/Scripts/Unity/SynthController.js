@@ -8,6 +8,8 @@ var base = 46.0;
 @Range(1, 24)       var fm_mul = 1;
 @Range(0.0, 1.0)    var fm_mod = 0.0;
 @Range(0.01, 0.3)   var env_rel = 0.2;
+@Range(1, 16)       var bit_int = 4;
+@Range(0.0, 1.0)    var bit_mix = 1.0;
 
 class ASynth {
     static private var seed = 0.0;
@@ -23,10 +25,12 @@ class ASynth {
         seed += 3.1415926;
     }
 
-    function SetParam(fm_mul : int, fm_mod : float, env_rel : float) {
+    function SetParam(fm_mul : int, fm_mod : float, env_rel : float, bit_int : int, bit_mix : float) {
         osc.multiplier = fm_mul;
         osc.modulation = fm_mod;
         env.release = env_rel;
+        bit.interval = bit_int;
+        bit.mix = bit_mix;
     }
 
     function Run() {
@@ -49,8 +53,8 @@ function Start() {
 }
 
 function Update() {
-    arp1.SetParam(fm_mul, fm_mod, env_rel);
-    arp2.SetParam(fm_mul, fm_mod, env_rel);
+    arp1.SetParam(fm_mul, fm_mod, env_rel, bit_int, bit_mix);
+    arp2.SetParam(fm_mul, fm_mod, env_rel, bit_int, bit_mix);
 }
 
 function OnAudioFilterRead(data : float[], channels : int) {
