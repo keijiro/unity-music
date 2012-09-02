@@ -1,6 +1,6 @@
 #pragma strict
 
-class Sequencer {
+class Arpeggiator {
     private var delta = 0.0;
     private var counter = 1.0;
     
@@ -10,7 +10,7 @@ class Sequencer {
     var currentNote = -1;
     private var prevNote = -1;
 
-    function Sequencer(aBpm : int, base : int, seed : float) {
+    function Arpeggiator(aBpm : int, base : int, seed : float) {
         delta = 4.0 * aBpm / (SynthConfig.kSampleRate * 60);
         scale = Scale(base);
         position = seed;

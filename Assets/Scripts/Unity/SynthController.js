@@ -16,10 +16,10 @@ class ASynth {
     var env = Envelope();
     var amp = Amplifier(env);
     var bit = Bitcrusher();
-    var seq : Sequencer;
+    var arp : Arpeggiator;
 
     function ASynth(bpm: int, base: int, octave : int) {
-        seq = Sequencer(bpm, base + 12 * octave, seed);
+        arp = Arpeggiator(bpm, base + 12 * octave, seed);
         seed += 3.1415926;
     }
 
@@ -30,8 +30,8 @@ class ASynth {
     }
 
     function Run() {
-        if (seq.Run()) {
-            osc.SetNote(seq.currentNote);
+        if (arp.Run()) {
+            osc.SetNote(arp.currentNote);
             env.Bang();
         }
         var x = bit.Run(amp.Run(osc.Run()));
