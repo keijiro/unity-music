@@ -4,7 +4,7 @@ class Arpeggiator {
     private var delta = 0.0;
     private var counter = 1.0;
     
-    private var scale = Scale(80);
+    private var scale : MusicalScale;
     private var position = 0.0;
     
     var currentNote = -1;
@@ -12,7 +12,7 @@ class Arpeggiator {
 
     function Arpeggiator(aBpm : int, base : int, seed : float) {
         delta = 4.0 * aBpm / (SynthConfig.kSampleRate * 60);
-        scale = Scale(base);
+        scale = MusicalScale(base);
         position = seed;
     }
 
@@ -20,13 +20,13 @@ class Arpeggiator {
         var bang = (counter >= 1.0);
         
         if (bang) {
-            currentNote = scale.GetNote(Perlin.Fbm(position, 4) * 25);
+            currentNote = scale.GetNote(Perlin.Fbm(position, 4) * 24);
             if (currentNote == prevNote) {
                 bang = false;
             } else {
                 prevNote = currentNote;
             }
-            position += 0.13;
+            position += 0.1713;
             counter -= 1.0;
         }
         
