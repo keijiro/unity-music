@@ -2,9 +2,8 @@
 
 @script RequireComponent(AudioSource)
 
-var bpm = 124.0;
-var base = 46.0;
-
+@Range(8.0, 200.0)  var bpm = 80.0;
+@Range(24, 84)      var baseNote = 46.0;
 @Range(1, 24)       var fm_mul = 1;
 @Range(0.0, 1.0)    var fm_mod = 0.0;
 @Range(0.01, 0.3)   var env_rel = 0.2;
@@ -27,7 +26,8 @@ class ASynth {
         seed += 3.1415926;
     }
 
-    function SetParam(fm_mul : int, fm_mod : float, env_rel : float, bit_int : int, bit_mix : float) {
+    function SetParam(bpm : int, fm_mul : int, fm_mod : float, env_rel : float, bit_int : int, bit_mix : float) {
+        arp.SetBpm(bpm);
         osc.multiplier = fm_mul;
         osc.modulation = fm_mod;
         env.release = env_rel;
@@ -46,8 +46,8 @@ class ASynth {
     }
 }
 
-private var arp1 = ASynth(bpm, base, 1);
-private var arp2 = ASynth(bpm, base, 3);
+private var arp1 = ASynth(bpm, baseNote, 1);
+private var arp2 = ASynth(bpm, baseNote, 3);
 
 function Start() {
     audio.clip = AudioClip.Create("(null)", 0xfffffff, 1, SynthConfig.kSampleRate, false, true, function(data:float[]){});
@@ -55,8 +55,8 @@ function Start() {
 }
 
 function Update() {
-    arp1.SetParam(fm_mul, fm_mod, env_rel, bit_int, bit_mix);
-    arp2.SetParam(fm_mul, fm_mod, env_rel, bit_int, bit_mix);
+    arp1.SetParam(bpm, fm_mul, fm_mod, env_rel, bit_int, bit_mix);
+    arp2.SetParam(bpm, fm_mul, fm_mod, env_rel, bit_int, bit_mix);
 }
 
 function OnAudioFilterRead(data : float[], channels : int) {

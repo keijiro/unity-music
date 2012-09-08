@@ -10,10 +10,14 @@ class Arpeggiator {
     var currentNote = -1;
     private var prevNote = -1;
 
-    function Arpeggiator(aBpm : int, base : int, seed : float) {
-        delta = 4.0 * aBpm / (SynthConfig.kSampleRate * 60);
+    function Arpeggiator(bpm : int, base : int, seed : float) {
+        SetBpm(bpm);
         scale = MusicalScale(base);
         position = seed;
+    }
+
+    function SetBpm(bpm : int) {
+        delta = 4.0 * bpm / (SynthConfig.kSampleRate * 60);
     }
 
     function Run() {
