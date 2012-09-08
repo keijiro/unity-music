@@ -10,6 +10,8 @@ var base = 46.0;
 @Range(0.01, 0.3)   var env_rel = 0.2;
 @Range(1, 16)       var bit_int = 4;
 @Range(0.0, 1.0)    var bit_mix = 1.0;
+@Range(-1.0, 1.0)   var stereo = 0.3;
+@Range(0.0, 1.0)    var volume = 0.7;
 
 class ASynth {
     static private var seed = 0.0;
@@ -58,8 +60,12 @@ function Update() {
 }
 
 function OnAudioFilterRead(data : float[], channels : int) {
-    // Asserts channels == 2
+    var lv = volume * 0.5 * (stereo + 1);
+    var rv = volume - lv;
     for (var i = 0; i < data.Length; i += 2) {
-        data[i] = data[i + 1] = arp1.Run() + arp2.Run();
+        var s1 = arp1.Run();
+        var s2 = arp2.Run();
+        data[i    ] = s1 * lv + s2 * rv;
+        data[i + 1] = s1 * rv + s2 * lv;
     }
 }
